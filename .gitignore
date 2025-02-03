@@ -10,8 +10,12 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Whole .idea folder
+# Folders
 .idea/
+
+# Maven things
+target/
+dependency-reduced-pom.xml
 
 # Package Files #
 *.jar
