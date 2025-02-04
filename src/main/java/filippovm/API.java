@@ -17,22 +17,23 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
 public class API {
-    public static void main(String[] args) {
+    public static Countries call() {
         try {
-            Country country = new Country();
+            Countries countries;
             Gson gson = new Gson();
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI("https://countries-api-abhishek.vercel.app/countries/russia"))
+                    .uri(new URI("https://countries-api-abhishek.vercel.app/countries"))
                     .GET()
                     .build();
             HttpResponse<String> getResponse = HttpClient.newHttpClient()
                     .send(getRequest, BodyHandlers.ofString());
-            country = gson.fromJson(getResponse.body(), Country.class);
 
-            Country.Data data = country.getData();
-            System.out.println("Country: " + data.getName());
-            System.out.println("Capital: " + data.getCapital());
-            System.out.println("Borders: " + data.getBorders());
+            countries = gson.fromJson(getResponse.body(), Countries.class);
+//            System.out.println("Country: " + country.getName());
+//            System.out.println("Capital: " + country.getCapital());
+//            System.out.println("Borders: " + country.getBorders());
+
+            return countries;
 
         } catch (URISyntaxException e) {
             System.err.println("URI is invalid");
@@ -41,5 +42,6 @@ public class API {
         } catch (InterruptedException e) {
             System.err.println("InterruptedException");
         }
+        return null;
     }
 }
