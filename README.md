@@ -3,6 +3,12 @@
 filippovm@msoe.edu  
 [LinkedIn](linkedin.com/in/mikhail-filippov/)
 
+### How this Works
+In this repo, you will find a variety of things. One is the existence of **multiple branches**. Each branch is dedicated to a project. For example, a branch called `API_App` is a current project where I experiment with Maven builds and Java APIs! My hope is to have many branches in the following year to come.
+
+### `API_App`
+This application will be a country trivia game that relies on an API full of countries (you can find the link [here](https://nationnode.vercel.app/)). The goal of the game will be to guess the country by flag, any neighboring countries you know, and get within a reasonable population size of the country. A `README.md` will be made with more info for that specific branch. Fun! 🗺️
+
 ### A Little About Me (and my skills!⚙️)
 Hi there! My name is Mikhail Filippov, and I am a current sophomore student at Milwaukee School of Engineering (MSOE) 🏴‍☠️ studying Computer Science; in addition to that, I have minors in Computer Engineering and Mathematics. My top languages include **Java**, **C**, **Python**, and Russian (not coding heh). I am in the process of self-teaching **HTML** and **JavaScript** and associated libraries, such as **React** and **Node.js**, which I hope to use to build some personal projects to post online! 😊 Some of the other skills I have include: Git (obviously), Assembly Programming (x86), Linux Operating Systems, JavaFX, Pandas, NumPy, VHDL, ML, and public presentations.
 
