@@ -16,25 +16,23 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
-public class APITest {
+public class API {
     public static void main(String[] args) {
         try {
-            Weather weather = new Weather();
+            Country country = new Country();
             Gson gson = new Gson();
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI("http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=civil&output=json"))
+                    .uri(new URI("https://countries-api-abhishek.vercel.app/countries/russia"))
                     .GET()
                     .build();
-
             HttpResponse<String> getResponse = HttpClient.newHttpClient()
                     .send(getRequest, BodyHandlers.ofString());
+            country = gson.fromJson(getResponse.body(), Country.class);
 
-            weather = gson.fromJson(getResponse.body(), Weather.class);
-
-//            System.out.println(getResponse.body());
-            System.out.println("Temperature: " + weather.getTemp2m());
-            System.out.println("Weather: " + weather.getWeather());
-            System.out.println("Init: " + weather.getInit());
+            Country.Data data = country.getData();
+            System.out.println("Country: " + data.getName());
+            System.out.println("Capital: " + data.getCapital());
+            System.out.println("Borders: " + data.getBorders());
 
         } catch (URISyntaxException e) {
             System.err.println("URI is invalid");
