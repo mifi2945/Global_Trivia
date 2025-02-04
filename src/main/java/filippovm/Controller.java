@@ -6,13 +6,24 @@
 
 package filippovm;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.PNGTranscoder;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Set;
+import java.util.TreeSet;
+
 
 public class Controller {
     @FXML
@@ -32,6 +43,7 @@ public class Controller {
             return;
         }
 
+        Set<Country> usedCountries = new TreeSet<>();
         int random = (int)(Math.random() * countries.getCountries().size());
         Country country = countries.getCountries().get(random);
 
@@ -86,6 +98,32 @@ public class Controller {
     }
 
     private void setFlag(String url) {
-        flag.setImage(new Image("")); // TODO add SVG file support
+        // TODO add SVG file support
+        flag.setImage(convertSVGToImage(url));
+    }
+
+    public static Image convertSVGToImage(String url) {
+        try {
+            // Read SVG from URL
+            InputStream inputStream = new URL(url).openStream();
+            TranscoderInput input = new TranscoderInput(inputStream);
+
+            // Convert SVG to PNG using Batik
+            PNGTranscoder transcoder = new PNGTranscoder();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            TranscoderOutput output = new TranscoderOutput(outputStream);
+
+            transcoder.transcode(input, output);
+            outputStream.flush();
+
+            // Convert PNG byte stream to JavaFX Image
+            ByteArrayInputStream pngInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            BufferedImage bufferedImage = ImageIO.read(pngInputStream);
+            return SwingFXUtils.toFXImage(bufferedImage, null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
