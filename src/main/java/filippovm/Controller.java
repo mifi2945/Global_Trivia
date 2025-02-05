@@ -6,35 +6,28 @@
 
 package filippovm;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.batik.transcoder.image.PNGTranscoder;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
 
 
 public class Controller {
+    public static final String CHOICE1 = "choice1",
+            CHOICE2 = "choice2",
+            CHOICE3 = "choice3",
+            CHOICE4 = "choice4";
+
     @FXML
     private Button startButton, choice1, choice2, choice3, choice4;
     @FXML
     private ImageView flag;
 
-    @FXML
-    private void startGame() {
-        startButton.setVisible(false);
+    private Trivia generator;
 
+    @FXML
+    private void initialize() {
         Countries countries = API.call();
         if (countries == null || countries.getStatusCode() != 200) {
             System.err.println("ERROR: API call failed");
@@ -42,51 +35,21 @@ public class Controller {
             System.err.println("Status code: " + countries.getStatusCode());
             return;
         }
+        generator = new Trivia(countries);
+    }
 
-        Set<Country> usedCountries = new TreeSet<>();
-        int random = (int)(Math.random() * countries.getCountries().size());
-        Country country = countries.getCountries().get(random);
+    @FXML
+    private void startGame() {
+        startButton.setVisible(false);
 
-        setFlag(country.getFlag());
+        Map<String, String> question = generator.generateQuestion();
 
+        setFlag(question.get("flag"));
+        choice1.setText(question.get(CHOICE1));
+        choice2.setText(question.get(CHOICE2));
+        choice3.setText(question.get(CHOICE3));
+        choice4.setText(question.get(CHOICE4));
 
-        int randomChoice = 0;
-        while (randomChoice < 4 && randomChoice < country.getBorders().size()) {
-            switch (randomChoice) {
-                case 0:
-                    choice1.setText(country.getBorders().get(randomChoice));
-                    break;
-                case 1:
-                    choice2.setText(country.getBorders().get(randomChoice));
-                    break;
-                case 2:
-                    choice3.setText(country.getBorders().get(randomChoice));
-                    break;
-                case 3:
-                    choice4.setText(country.getBorders().get(randomChoice));
-                    break;
-            }
-            randomChoice++;
-        }
-
-        if (randomChoice < 4) {
-            for (int i = randomChoice; i < 4; i++) {
-                switch (i) {
-                    case 0:
-                        choice1.setText(countries.getCountries().get((int)(Math.random() * countries.getCountries().size())).getName());
-                        break;
-                    case 1:
-                        choice2.setText(countries.getCountries().get((int)(Math.random() * countries.getCountries().size())).getName());
-                        break;
-                    case 2:
-                        choice3.setText(countries.getCountries().get((int)(Math.random() * countries.getCountries().size())).getName());
-                        break;
-                    case 3:
-                        choice4.setText(countries.getCountries().get((int)(Math.random() * countries.getCountries().size())).getName());
-                        break;
-                }
-            }
-        }
 
         choice1.setVisible(true);
         choice2.setVisible(true);
@@ -98,32 +61,6 @@ public class Controller {
     }
 
     private void setFlag(String url) {
-        // TODO add SVG file support
-        flag.setImage(convertSVGToImage(url));
-    }
-
-    public static Image convertSVGToImage(String url) {
-        try {
-            // Read SVG from URL
-            InputStream inputStream = new URL(url).openStream();
-            TranscoderInput input = new TranscoderInput(inputStream);
-
-            // Convert SVG to PNG using Batik
-            PNGTranscoder transcoder = new PNGTranscoder();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            TranscoderOutput output = new TranscoderOutput(outputStream);
-
-            transcoder.transcode(input, output);
-            outputStream.flush();
-
-            // Convert PNG byte stream to JavaFX Image
-            ByteArrayInputStream pngInputStream = new ByteArrayInputStream(outputStream.toByteArray());
-            BufferedImage bufferedImage = ImageIO.read(pngInputStream);
-            return SwingFXUtils.toFXImage(bufferedImage, null);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        flag.setImage(API.convertSVGToImage(url));
     }
 }

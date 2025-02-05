@@ -3,7 +3,7 @@ package filippovm;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Country {
+public class Country implements Comparable<Country> {
     private String name;
     private String capital;
     private List<String> borders = new ArrayList<>();
@@ -32,6 +32,11 @@ public class Country {
     }
     public void setFlag(String flag) {
         this.flag = flag;
+    }
+
+    @Override
+    public int compareTo(Country o) {
+        return this.name.compareTo(o.name);
     }
 
 //    static class Data{
