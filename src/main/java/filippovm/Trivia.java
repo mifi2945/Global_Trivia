@@ -5,12 +5,14 @@ import java.util.*;
 public class Trivia {
     private Set<Country> usedCountries;
     private final List<Country> countries;
+    private String correctChoice;
 
     public static int TOTAL_COUNTRIES;
 
     public Trivia(Countries countries) {
         usedCountries = new HashSet<>();
         this.countries = countries.getCountries();
+        correctChoice = "";
 
         TOTAL_COUNTRIES = countries.getCountries().size();
     }
@@ -34,6 +36,7 @@ public class Trivia {
 
         // add correct answer
         question.put("choice"+randomChoice, country.getName());
+        correctChoice = "choice"+randomChoice;
         usedIndexes.remove(randomChoice-1);
 
         // add wrong answers, starting with borders
@@ -54,4 +57,7 @@ public class Trivia {
         return question;
     }
 
+    public String getCorrectChoice() {
+        return correctChoice;
+    }
 }
