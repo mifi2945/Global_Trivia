@@ -1,10 +1,10 @@
-#correct {
+.correct {
     -fx-background-color: #548C2F;
 }
-#incorrect {
+.incorrect {
     -fx-background-color: #C1292E;
 }
-#reset_button {
+.reset_button {
     -fx-background-color: #D8D8F6;
 }
 
