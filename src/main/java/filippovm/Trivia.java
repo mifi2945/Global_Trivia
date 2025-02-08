@@ -36,7 +36,7 @@ public class Trivia {
 
         // add correct answer
         question.put("choice"+randomChoice, country.getName());
-        correctChoice = "choice"+randomChoice;
+        correctChoice = country.getName();
         usedIndexes.remove(randomChoice-1);
 
         // add wrong answers, starting with borders

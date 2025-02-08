@@ -20,6 +20,7 @@ public class Driver extends Application {
         stage.setScene(scene);
         stage.setTitle("Global Trivia");
         stage.setResizable(false);
+        pane.setId("root");
         stage.show();
     }
 }

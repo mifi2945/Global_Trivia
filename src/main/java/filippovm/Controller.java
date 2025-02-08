@@ -12,7 +12,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
+import java.net.URISyntaxException;
 import java.util.Map;
 
 
@@ -21,6 +24,10 @@ public class Controller {
             CHOICE2 = "choice2",
             CHOICE3 = "choice3",
             CHOICE4 = "choice4";
+    public enum Status {
+        CORRECT,
+        INCORRECT
+    }
 
     @FXML
     private Button startButton, choice1, choice2, choice3, choice4;
@@ -57,42 +64,37 @@ public class Controller {
     }
 
     @FXML
-    private void answer(ActionEvent event) {
+    private void answer(ActionEvent event) throws URISyntaxException {
         Button button = (Button) event.getSource();
-        if (button.getId().equals(generator.getCorrectChoice())) {
-            //button.setId("correct");
-            button.getStyleClass().remove("reset_button");
-            button.getStyleClass().add("correct");
+        if (button.getText().equals(generator.getCorrectChoice())) {
+            button.setId("correct");
             questionLabel.setText("Correct!");
             questionLabel.setId("correct");
+            playSound(Status.CORRECT);
         } else {
-            //button.setId("incorrect");
-            button.getStyleClass().remove("reset_button");
-            button.getStyleClass().add("incorrect");
+            button.setId("incorrect");
             questionLabel.setText("Uh oh!");
             questionLabel.setId("incorrect");
+            playSound(Status.INCORRECT);
             showCorrectAnswer();
         }
         transition();
-        // TODO: add sound effects
     }
 
     private void setFlag(String url) {
         flag.setImage(API.convertSVGToImage(url));
     }
     private void showCorrectAnswer() {
-        switch (generator.getCorrectChoice()) {
-            case CHOICE1 -> choice1.setId("correct");
-            case CHOICE2 -> choice2.setId("correct");
-            case CHOICE3 -> choice3.setId("correct");
-            case CHOICE4 -> choice4.setId("correct");
+        for (Button button : new Button[]{choice1, choice2, choice3, choice4}) {
+            if (button.getText().equals(generator.getCorrectChoice())) {
+                button.setId("correct");
+                break;
+            }
         }
     }
     private void nextQuestion() {
         for (Button button : new Button[]{choice1, choice2, choice3, choice4}) {
-            //button.getStyleClass().remove("correct");
-            //button.getStyleClass().remove("incorrect");
-            button.getStyleClass().add("reset_button");
+            button.setId("reset_button");
         }
         Map<String, String> question = generator.generateQuestion();
 
@@ -120,7 +122,17 @@ public class Controller {
             nextQuestion();
         });
         pause.play();
-
-
+    }
+    private void playSound(Status status) {
+        String soundPath = switch (status) {
+            case CORRECT -> "/sounds/correct.mp3";
+            case INCORRECT -> "/sounds/quack.mp3";
+        };
+        try {
+            new MediaPlayer(new Media(getClass().getResource(soundPath).toExternalForm())).play();
+        } catch (NullPointerException e) {
+            System.err.println("ERROR: unable to play sound");
+            System.err.println(e.getMessage());
+        }
     }
 }
