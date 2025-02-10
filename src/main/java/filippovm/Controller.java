@@ -10,13 +10,16 @@ import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class Controller {
@@ -61,6 +64,26 @@ public class Controller {
         choice3.setVisible(true);
         choice4.setVisible(true);
         flag.setVisible(true);
+    }
+
+    private void login() {
+        TextInputDialog loginPage = new TextInputDialog("");
+        loginPage.getDialogPane().getButtonTypes().remove(1);
+        Button login = (Button) loginPage.getDialogPane().lookupButton(ButtonType.OK);
+        login.setText("Login");
+
+        loginPage.setTitle("Login Page");
+        loginPage.setHeaderText("Welcome to Wordle!\nPlease enter your username.\n" +
+                "Required: 1-15 characters, only capital and lowercase letters.\n" +
+                "Press the [X] to exit the game.");
+        loginPage.setContentText("Username:");
+        ImageView loginPic = new ImageView(this.getClass().getResource("/images/user.png").toString());
+        loginPic.setFitHeight(70);
+        loginPic.setFitWidth(70);
+
+        loginPage.setGraphic(loginPic);
+        Optional<String> result = loginPage.showAndWait();
+
     }
 
     @FXML

@@ -1,7 +1,8 @@
 /**
  * Mikhail Filippov
  * 02/02/2025
- * PLaying around with Maven and Java APIs
+ * API class for getting countries and anything to do
+ * with the API
  */
 
 package filippovm;

@@ -1,3 +1,9 @@
+/**
+ * Mikhail Filippov
+ * 02/05/2025
+ * Trivia class backend for question generation logic
+ */
+
 package filippovm;
 
 import java.util.*;
