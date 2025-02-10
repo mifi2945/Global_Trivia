@@ -43,6 +43,7 @@ public class Controller {
 
     @FXML
     private void initialize() {
+        login();
         Countries countries = API.call();
         if (countries == null || countries.getStatusCode() != 200) {
             System.err.println("ERROR: API call failed");
@@ -73,9 +74,15 @@ public class Controller {
         login.setText("Login");
 
         loginPage.setTitle("Login Page");
-        loginPage.setHeaderText("Welcome to Wordle!\nPlease enter your username.\n" +
-                "Required: 1-15 characters, only capital and lowercase letters.\n" +
-                "Press the [X] to exit the game.");
+        loginPage.setHeaderText("""
+                Welcome to Global Trivia! 
+                Please enter your username.
+                Allowed:
+                   - 1-15 characters
+                   - Alphanumeric characters
+                   - Underscores
+                Close this window to exit the game.
+                """);
         loginPage.setContentText("Username:");
         ImageView loginPic = new ImageView(this.getClass().getResource("/images/user.png").toString());
         loginPic.setFitHeight(70);
@@ -83,7 +90,12 @@ public class Controller {
 
         loginPage.setGraphic(loginPic);
         Optional<String> result = loginPage.showAndWait();
-
+        if (result.isPresent() && !result.get().isEmpty()
+                && result.get().length() < 16 && result.get().matches("(_*\\p{Alnum}_*)+")) {
+            System.out.println("Welcome, " + result.get() + "!");
+        } else {
+            login();
+        }
     }
 
     @FXML

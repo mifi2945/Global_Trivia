@@ -30,7 +30,8 @@ public class Trivia {
         int countryIndex;
         do {
             countryIndex = (int) (Math.random() * TOTAL_COUNTRIES);
-        } while (!usedCountries.add(countries.get(countryIndex)));
+        } while (!usedCountries.add(countries.get(countryIndex))
+                && !countries.get(countryIndex).getName().equals("Xenocera"));
 
         Country country = countries.get(countryIndex);
         // add flag url

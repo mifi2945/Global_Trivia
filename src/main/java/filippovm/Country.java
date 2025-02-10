@@ -38,39 +38,4 @@ public class Country implements Comparable<Country> {
     public int compareTo(Country o) {
         return this.name.compareTo(o.name);
     }
-
-//    static class Data{
-//        String name;
-//        String capital;
-//        List<String> borders = new ArrayList<>();
-//
-//        public String getName() {
-//            return name;
-//        }
-//        public void setName(String name) {
-//            this.name = name;
-//        }
-//        public String getCapital() {
-//            return capital;
-//        }
-//        public void setCapital(String capital) {
-//            this.capital = capital;
-//        }
-//        public List<String> getBorders() {
-//            return borders;
-//        }
-//        public void setBorders(List<String> borders) {
-//            this.borders = borders;
-//        }
-//    }
-
-//    private Data data;
-//    public Data getData() {
-//        return data;
-//    }
-//
-//    public void setData(Data data) {
-//        this.data = data;
-//    }
-
 }

@@ -41,10 +41,6 @@ public class API {
                     .send(getRequest, BodyHandlers.ofString());
 
             countries = gson.fromJson(getResponse.body(), Countries.class);
-//            System.out.println("Country: " + country.getName());
-//            System.out.println("Capital: " + country.getCapital());
-//            System.out.println("Borders: " + country.getBorders());
-
             return countries;
 
         } catch (URISyntaxException e) {
