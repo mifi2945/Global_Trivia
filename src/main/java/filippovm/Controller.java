@@ -28,8 +28,8 @@ public class Controller {
             CHOICE3 = "choice3",
             CHOICE4 = "choice4";
     public enum Status {
-        CORRECT,
-        INCORRECT
+        INCORRECT,
+        CORRECT
     }
 
     @FXML

@@ -10,6 +10,9 @@
 #root {
     -fx-background-color: #0C0A3E;
 }
+#statistics .label {
+    -fx-text-fill: #ECD444;
+}
 .button {
     -fx-border-radius: 5px;
 }
