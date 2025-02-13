@@ -32,5 +32,8 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Label fx:id="score_label" focusTraversable="false" layoutX="451.0" layoutY="37.0" prefHeight="17.0" prefWidth="40.0" text="Score:" visible="false" />
+      <Label fx:id="name_label" focusTraversable="false" layoutX="451.0" layoutY="14.0" prefHeight="17.0" prefWidth="100.0" text="NAME___________" visible="false" />
+      <Label fx:id="score" focusTraversable="false" layoutX="487.0" layoutY="37.0" prefHeight="17.0" prefWidth="23.0" text="0" visible="false" />
    </children>
 </Pane>

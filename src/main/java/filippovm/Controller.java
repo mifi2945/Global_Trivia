@@ -38,8 +38,11 @@ public class Controller {
     private ImageView flag;
     @FXML
     private Label questionLabel;
+    @FXML
+    private Label score_label, name_label, score;
 
     private Trivia generator;
+    private Player player;
 
     @FXML
     private void initialize() {
@@ -65,6 +68,9 @@ public class Controller {
         choice3.setVisible(true);
         choice4.setVisible(true);
         flag.setVisible(true);
+        score_label.setVisible(true);
+        name_label.setVisible(true);
+        score.setVisible(true);
     }
 
     private void login() {
@@ -90,29 +96,36 @@ public class Controller {
 
         loginPage.setGraphic(loginPic);
         Optional<String> result = loginPage.showAndWait();
-        if (result.isPresent() && !result.get().isEmpty()
+        if (result.isEmpty()) {
+            System.exit(0);
+        }
+        if (!result.get().isEmpty()
                 && result.get().length() < 16 && result.get().matches("(_*\\p{Alnum}_*)+")) {
-            System.out.println("Welcome, " + result.get() + "!");
+            player = new Player(result.get());
+            name_label.setText(result.get());
         } else {
             login();
         }
     }
 
     @FXML
-    private void answer(ActionEvent event) throws URISyntaxException {
+    private void answer(ActionEvent event) {
         Button button = (Button) event.getSource();
         if (button.getText().equals(generator.getCorrectChoice())) {
             button.setId("correct");
             questionLabel.setText("Correct!");
             questionLabel.setId("correct");
             playSound(Status.CORRECT);
+            player.incremenetScore();
         } else {
             button.setId("incorrect");
             questionLabel.setText("Uh oh!");
             questionLabel.setId("incorrect");
             playSound(Status.INCORRECT);
+            player.decrementScore();
             showCorrectAnswer();
         }
+        score.setText(String.valueOf(player.getScore()));
         transition();
     }
 

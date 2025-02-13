@@ -20,4 +20,16 @@ public class Player {
     }
     public Player(String name, int id) {
     }
+
+    public void incremenetScore() {
+        score++;
+    }
+    public void decrementScore() {
+        if (score > 0) {
+            score--;
+        }
+    }
+    public int getScore() {
+        return score;
+    }
 }
