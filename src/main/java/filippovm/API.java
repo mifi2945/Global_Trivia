@@ -44,11 +44,12 @@ public class API {
             return countries;
 
         } catch (URISyntaxException e) {
-            System.err.println("URI is invalid");
+            System.err.println("URI is invalid caught");
         } catch (IOException e) {
-            System.err.println("IOException");
+            System.err.println("IOException caught");
+            System.exit(400);
         } catch (InterruptedException e) {
-            System.err.println("InterruptedException");
+            System.err.println("InterruptedException caught");
         }
         return null;
     }
