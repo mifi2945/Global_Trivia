@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,6 +30,8 @@ public class Controller {
         INCORRECT,
         CORRECT
     }
+    private static MediaPlayer correctSound;
+    private static MediaPlayer wrongSound;
 
     @FXML
     private Button startButton, choice1, choice2, choice3, choice4;
@@ -54,6 +55,18 @@ public class Controller {
             System.err.println("Status code: " + countries.getStatusCode());
             return;
         }
+
+        try {
+            correctSound = new MediaPlayer(
+                    new Media(getClass().getResource("/sounds/correct.mp3").toExternalForm())
+            );
+            wrongSound = new MediaPlayer(
+                    new Media(getClass().getResource("/sounds/quack.mp3").toExternalForm())
+            );
+        } catch (NullPointerException e) {
+            System.err.println("ERROR: Sound files not found");
+        }
+
         generator = new Trivia(countries);
     }
 
@@ -172,15 +185,11 @@ public class Controller {
         pause.play();
     }
     private void playSound(Status status) {
-        String soundPath = switch (status) {
-            case CORRECT -> "/sounds/correct.mp3";
-            case INCORRECT -> "/sounds/quack.mp3";
+        MediaPlayer player = switch (status) {
+            case CORRECT -> correctSound;
+            case INCORRECT -> wrongSound;
         };
-        try {
-            new MediaPlayer(new Media(getClass().getResource(soundPath).toExternalForm())).play();
-        } catch (NullPointerException e) {
-            System.err.println("ERROR: unable to play sound");
-            System.err.println(e.getMessage());
-        }
+        player.seek(javafx.util.Duration.ZERO);
+        player.play();
     }
 }
