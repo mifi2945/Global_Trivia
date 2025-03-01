@@ -10,13 +10,16 @@ import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class Controller {
@@ -25,8 +28,8 @@ public class Controller {
             CHOICE3 = "choice3",
             CHOICE4 = "choice4";
     public enum Status {
-        CORRECT,
-        INCORRECT
+        INCORRECT,
+        CORRECT
     }
 
     @FXML
@@ -35,11 +38,15 @@ public class Controller {
     private ImageView flag;
     @FXML
     private Label questionLabel;
+    @FXML
+    private Label score_label, name_label, score;
 
     private Trivia generator;
+    private Player player;
 
     @FXML
     private void initialize() {
+        login();
         Countries countries = API.call();
         if (countries == null || countries.getStatusCode() != 200) {
             System.err.println("ERROR: API call failed");
@@ -61,23 +68,64 @@ public class Controller {
         choice3.setVisible(true);
         choice4.setVisible(true);
         flag.setVisible(true);
+        score_label.setVisible(true);
+        name_label.setVisible(true);
+        score.setVisible(true);
+    }
+
+    private void login() {
+        TextInputDialog loginPage = new TextInputDialog("");
+        loginPage.getDialogPane().getButtonTypes().remove(1);
+        Button login = (Button) loginPage.getDialogPane().lookupButton(ButtonType.OK);
+        login.setText("Login");
+
+        loginPage.setTitle("Login Page");
+        loginPage.setHeaderText("""
+                Welcome to Global Trivia! 
+                Please enter your username.
+                Allowed:
+                   - 1-15 characters
+                   - Alphanumeric characters
+                   - Underscores
+                Close this window to exit the game.
+                """);
+        loginPage.setContentText("Username:");
+        ImageView loginPic = new ImageView(this.getClass().getResource("/images/user.png").toString());
+        loginPic.setFitHeight(70);
+        loginPic.setFitWidth(70);
+
+        loginPage.setGraphic(loginPic);
+        Optional<String> result = loginPage.showAndWait();
+        if (result.isEmpty()) {
+            System.exit(0);
+        }
+        if (!result.get().isEmpty()
+                && result.get().length() < 16 && result.get().matches("(_*\\p{Alnum}_*)+")) {
+            player = new Player(result.get());
+            name_label.setText(result.get());
+        } else {
+            login();
+        }
     }
 
     @FXML
-    private void answer(ActionEvent event) throws URISyntaxException {
+    private void answer(ActionEvent event) {
         Button button = (Button) event.getSource();
         if (button.getText().equals(generator.getCorrectChoice())) {
             button.setId("correct");
             questionLabel.setText("Correct!");
             questionLabel.setId("correct");
             playSound(Status.CORRECT);
+            player.incremenetScore();
         } else {
             button.setId("incorrect");
             questionLabel.setText("Uh oh!");
             questionLabel.setId("incorrect");
             playSound(Status.INCORRECT);
+            player.decrementScore();
             showCorrectAnswer();
         }
+        score.setText(String.valueOf(player.getScore()));
         transition();
     }
 

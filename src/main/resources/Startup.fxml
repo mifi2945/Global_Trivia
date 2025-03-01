@@ -32,5 +32,12 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Pane id="statistics" layoutX="441.0" layoutY="14.0" prefHeight="63.0" prefWidth="137.0">
+         <children>
+            <Label fx:id="name_label" focusTraversable="false" layoutX="4.0" layoutY="6.0" prefHeight="17.0" prefWidth="100.0" text="NAME___________" visible="false" />
+            <Label fx:id="score_label" focusTraversable="false" layoutX="4.0" layoutY="23.0" prefHeight="17.0" prefWidth="40.0" text="Score:" visible="false" />
+            <Label fx:id="score" focusTraversable="false" layoutX="43.0" layoutY="23.0" prefHeight="17.0" prefWidth="23.0" text="0" visible="false" />
+         </children>
+      </Pane>
    </children>
 </Pane>

@@ -1,7 +1,8 @@
 /**
  * Mikhail Filippov
  * 02/02/2025
- * PLaying around with Maven and Java APIs
+ * API class for getting countries and anything to do
+ * with the API
  */
 
 package filippovm;
@@ -40,18 +41,15 @@ public class API {
                     .send(getRequest, BodyHandlers.ofString());
 
             countries = gson.fromJson(getResponse.body(), Countries.class);
-//            System.out.println("Country: " + country.getName());
-//            System.out.println("Capital: " + country.getCapital());
-//            System.out.println("Borders: " + country.getBorders());
-
             return countries;
 
         } catch (URISyntaxException e) {
-            System.err.println("URI is invalid");
+            System.err.println("URI is invalid caught");
         } catch (IOException e) {
-            System.err.println("IOException");
+            System.err.println("IOException caught");
+            System.exit(400);
         } catch (InterruptedException e) {
-            System.err.println("InterruptedException");
+            System.err.println("InterruptedException caught");
         }
         return null;
     }

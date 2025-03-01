@@ -1,3 +1,9 @@
+/**
+ * Mikhail Filippov
+ * 02/05/2025
+ * Trivia class backend for question generation logic
+ */
+
 package filippovm;
 
 import java.util.*;
@@ -24,7 +30,8 @@ public class Trivia {
         int countryIndex;
         do {
             countryIndex = (int) (Math.random() * TOTAL_COUNTRIES);
-        } while (!usedCountries.add(countries.get(countryIndex)));
+        } while (countries.get(countryIndex).getName().equals("Xenocera") ||
+                !usedCountries.add(countries.get(countryIndex)));
 
         Country country = countries.get(countryIndex);
         // add flag url
@@ -53,7 +60,6 @@ public class Trivia {
             }
             question.put("choice"+usedIndexes.removeFirst(), incorrectCountry);
         }
-
         return question;
     }
 
